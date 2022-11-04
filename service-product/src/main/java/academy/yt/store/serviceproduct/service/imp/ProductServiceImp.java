@@ -4,16 +4,18 @@ import academy.yt.store.serviceproduct.entity.Category;
 import academy.yt.store.serviceproduct.entity.Product;
 import academy.yt.store.serviceproduct.repository.ProductRepository;
 import academy.yt.store.serviceproduct.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-
+@Service
+@RequiredArgsConstructor
 public class ProductServiceImp implements ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
+
+    private final ProductRepository productRepository;
 
     @Override
     public List<Product> listAllProduct() {
