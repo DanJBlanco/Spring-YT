@@ -1,0 +1,18 @@
+
+server:
+  port: 8081
+
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/DanJBlanco/Spring-YT.git
+          search-paths: config-data
+          username: ${GIT_USERNAME}
+          password: ${GIT_PASS}
+
+  security:
+    user:
+      name: root
+      password: s3cr3t
