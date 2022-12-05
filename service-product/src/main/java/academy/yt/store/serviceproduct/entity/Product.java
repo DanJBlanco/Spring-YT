@@ -17,6 +17,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.Date;
 
 @Entity
@@ -29,9 +32,11 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
+    @NotEmpty(message = "Name must not be empty")
     private String name;
     private String description;
+
+    @Positive(message = "Stock must be greater than zero")
     private Double stock;
     private Double price;
     private String status;
@@ -40,6 +45,7 @@ public class Product {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createAt;
 
+    @NotNull(message = "Category must not be empty")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

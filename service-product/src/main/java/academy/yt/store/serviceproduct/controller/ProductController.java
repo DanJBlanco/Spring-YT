@@ -3,15 +3,20 @@ package academy.yt.store.serviceproduct.controller;
 import academy.yt.store.serviceproduct.entity.Category;
 import academy.yt.store.serviceproduct.entity.Product;
 import academy.yt.store.serviceproduct.service.ProductService;
+import academy.yt.store.serviceproduct.util.ErrorMessage;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import javax.validation.Valid;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/products")
@@ -58,7 +63,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product){
+    public ResponseEntity<Product> createProduct(@Valid  @RequestBody Product product, BindingResult result){
+
+        if (result.hasErrors()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, this.formatMessage(result));
+        }
+
         Product productCreate = productService.createProduct(product);
 
         if(Objects.nonNull(productCreate)){
@@ -102,5 +112,28 @@ public class ProductController {
         }
         return ResponseEntity.notFound().build();
 
+    }
+
+    private String formatMessage( BindingResult result){
+        List<Map<String, String>> errors = result.getFieldErrors().stream()
+                .map( err -> {
+                    Map<String, String> error = new HashMap<>();
+                    error.put(err.getField(), err.getDefaultMessage());
+                    return error;
+                }).collect(Collectors.toList());
+
+        ErrorMessage errorMessage = ErrorMessage.builder()
+                .code("01")
+                .messages(errors)
+                .build();
+
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString="";
+        try {
+            jsonString = mapper.writeValueAsString(errorMessage);
+        } catch (JsonProcessingException e){
+            e.printStackTrace();
+        }
+        return  jsonString;
     }
 }
