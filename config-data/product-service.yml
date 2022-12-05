@@ -1,6 +1,6 @@
 #Application Configuration
 server:
-  port: 8091
+  port: 8096
   error:
 #      include-message: always
       include-stacktrace: never

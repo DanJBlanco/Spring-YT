@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Objects;
 
 @Service("CustomerServiceH2")
-@Slf4j
 public class CustomerServiceH2 implements CustomerService{
 
     final CustomerRepository customerRepository;

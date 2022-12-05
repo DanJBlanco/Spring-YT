@@ -5,7 +5,6 @@ import academy.yt.store.customerservice.repository.entity.Region;
 import academy.yt.store.customerservice.service.CustomerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,13 +15,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Slf4j
+
 @RestController
 @RequestMapping("/customer")
 public class CustomerRest {
@@ -48,7 +48,7 @@ public class CustomerRest {
             Region.setId(regionId);
             customers = customerService.findCustomersByRegion(Region);
             if ( null == customers ) {
-                log.error("Customers with Region id {} not found.", regionId);
+//                log.error("Customers with Region id {} not found.", regionId);
                 return  ResponseEntity.notFound().build();
             }
         }
@@ -60,10 +60,10 @@ public class CustomerRest {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Customer> getCustomer(@PathVariable("id") long id) {
-        log.info("Fetching Customer with id {}", id);
+//        log.info("Fetching Customer with id {}", id);
         Customer customer = customerService.getCustomer(id);
         if (  null == customer) {
-            log.error("Customer with id {} not found.", id);
+//            log.error("Customer with id {} not found.", id);
             return  ResponseEntity.notFound().build();
         }
         return  ResponseEntity.ok(customer);
@@ -73,7 +73,7 @@ public class CustomerRest {
 
     @PostMapping
     public ResponseEntity<Customer> createCustomer(@Valid @RequestBody Customer customer, BindingResult result) {
-        log.info("Creating Customer : {}", customer);
+//        log.info("Creating Customer : {}", customer);
 
         if (result.hasErrors()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, this.formatMessage(result));
@@ -88,12 +88,12 @@ public class CustomerRest {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<?> updateCustomer(@PathVariable("id") long id, @RequestBody Customer customer) {
-        log.info("Updating Customer with id {}", id);
+//        log.info("Updating Customer with id {}", id);
 
         Customer currentCustomer = customerService.getCustomer(id);
 
         if ( null == currentCustomer ) {
-            log.error("Unable to update. Customer with id {} not found.", id);
+//            log.error("Unable to update. Customer with id {} not found.", id);
             return  ResponseEntity.notFound().build();
         }
         customer.setId(id);
@@ -105,11 +105,11 @@ public class CustomerRest {
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Customer> deleteCustomer(@PathVariable("id") long id) {
-        log.info("Fetching & Deleting Customer with id {}", id);
+//        log.info("Fetching & Deleting Customer with id {}", id);
 
         Customer customer = customerService.getCustomer(id);
         if ( null == customer ) {
-            log.error("Unable to delete. Customer with id {} not found.", id);
+//            log.error("Unable to delete. Customer with id {} not found.", id);
             return  ResponseEntity.notFound().build();
         }
         customer = customerService.deleteCustomer(customer);

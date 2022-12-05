@@ -11,6 +11,7 @@ spring:
           searchPaths: config-data
           username: ${GIT_USERNAME}
           password: ${GIT_PASS}
+          default-label: feature/store-app
 
   security:
     user:
