@@ -8,7 +8,7 @@ spring:
       server:
         git:
           uri: https://github.com/DanJBlanco/Spring-YT.git
-          search-paths: config-data
+          searchPaths: config-data
           username: ${GIT_USERNAME}
           password: ${GIT_PASS}
 
